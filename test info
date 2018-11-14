@@ -9,6 +9,17 @@ if its a tsv do either:
 df = pd.read_table("TSVNAME.tsv")
 pd.read_csv('TSVNAME.tsv', sep='\t')
 
+
+GENERIC PYTHON STUFF
+--------------------
+lst = ['Ajay', 'Bobby','Ashok', 'Vijay', 'Anil', 'Rahul','Alex', 'Christopher']
+print (lst[1:])
+print (lst[0:])
+print (lst[2:-2]) # all elements starting from third element but skips the last two elements.
+print (lst[::2])  # this will print all alternate elements (begin to end in steps of 2)
+print (lst[::-1]) # this will print all elements in reverse order
+----------------------
+
 MATPLOTLIB EXAMPLE (MULTIPLE SCATTER WITH LEGEND)
 -------------------
 plt.scatter(df["COL_NAME_X1"],df["COL_NAME_Y"], label = "LABEL NAME(X1)", color="red")
@@ -32,6 +43,11 @@ plt.xlabel('Months')
 plt.title('Plot 1')
 plt.ylabel('Temperature(C)')
 plt.suptitle('Temperature from 1980 to 2000', fontsize=16)
+-------------------
+
+MATPLOTLIB EXAMPLE (BAR PLOT)
+-------------------
+df.plot.bar()
 -------------------
 
 MATPLOTLIB EXAMPLE (SUBPLOTTING(3))
@@ -61,6 +77,21 @@ month = int(input("Enter month: "))
 def get_index(year,month):
     print(temperature[(year-1980) * 12 + month - 1])
 get_index(year,month)
+
+
+OR
+
+def rater(var):
+    if(var <= 4):
+        return "low"
+    elif(var <= 8):
+        return "moderate"
+    else:
+        return "severe"
+
+var = South_America.total_litres_of_alcohol.apply(rating)
+South_America["rate"] = var
+var
 -------------------
 
 PANDAS INDEXING
@@ -78,8 +109,9 @@ np.max()
 np.amin()
 np.average()
 np.sum()
-np.argwhere()     --finds index given a condition
-np.arange()       --creates a range from start value to stop value, can have third value to determine increment amount
+np.argwhere()     (finds index given a condition)
+np.arange()       (creates a range from start value to stop value, can have third value to determine increment amount)
+np.std   (standard deviation)
 ---------------------------
 
 NUMPY SLICES
@@ -115,9 +147,109 @@ pd.DataFrame.from_records(both,columns = ['ID','Mark'])
 
 USEFUL DATAFRAME FUNCTIONS
 ----------------------------
-df.head()
-df.size
+df.head()    (returns first n rows)
+df.size    
+df.count   (doesnt include nan values)
 df.info
 df.dtypes
-df.loc()
+df.loc[]  e.g   nz = df.loc[df['country'] == 'New Zealand']      (sorting by key within column)
+df.drop()    e.g   d = df.drop(['pop','gdpPercap'],axis = 1)    (removing columns)
+df.rename()    e.g   df.rename(columns={"pop" : "population"})    (renaming columns)
+df.set_index()   e.g      df.set_index("pop")                     (sets index)
+df.mean()       e.g     jpn1 = jpn[['lifeExp']].mean()       (finds min value of a column)
+df.min()     e.g        wjpn = jpn[['continent']].min()      (finds min value of a column)
+df.max()
+df.groupby()    e.g    gdpa = df.groupby(['country'],as_index=False)['gdpPercap'].mean()
+df.sort_values()     e.g   movie1 = df.sort_values(["duration"], ascending = False)      ( naturally sorts based on column)
+df.agg()       e.g    df2.groupby("continent").wine_servings.agg([np.sum, np.mean,np.std])
+---------------------------
 
+VARIOUS DATAFRAME EXAMPLES
+---------------------------
+CREATING SMALLER DATAFRAMES
+usa3 = usa2[['country','pop']]
+usa4 = usa3[['pop']].min
+usa4
+
+GROUPBY EXAMPLE
+gdpa = df.groupby(['country'],as_index=False)['gdpPercap'].mean()
+gdpavg = gdpa.values
+gdpavg
+
+CREATING NEW COLUMNS THROUGH CONCATENATION
+df2['stiff_drink_servings'] = df2['spirit_servings'] + df2['wine_servings']
+df2
+
+CREATING NEW COLUMN WITH LIST OF VALUES
+color = ['Red','Blue','Orange','Red','White','White','Blue','Green','Green','Red']
+df['color'] = color
+df
+---------------------------
+
+DATAFRAME STRING FUNCTIONS
+--------------------------
+df.str.contains()
+df.str.startswith()
+--------------------------
+
+NULL AND NaN HANDLING
+--------------------------
+df.isnull()    e.g      nanrows = ufo[ufo["City"].isnull()]
+df.dropna()    e.g      ufo.dropna(subset=['Colors Reported','Shape Reported'])
+df.fillna      e.g      ufo["Shape Reported"].fillna('VARIOUS',inplace=True)
+--------------------------
+
+LINEAR REGRESSION
+--------------------------
+X = df[["TV","radio","newspaper"]]
+y = df[["sales"]]
+
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(X, y)
+print("\nX_train:\n")
+print(X_train.head())
+print(X_train.shape)
+
+print("\nX_test:\n")
+print(X_test.head())
+print(X_test.shape)
+
+from sklearn.linear_model import LinearRegression
+
+lr = LinearRegression()
+
+lr.fit(X_train,y_train)
+
+print(lr.coef_[0])
+print(lr.intercept_)
+print(list(zip(X.columns, lr.coef_[0])))
+
+y_predict = lr.predict(X_test)
+plt.scatter(y_test,y_predict, color="turquoise")
+
+from sklearn import metrics
+from math import sqrt
+
+mae = metrics.mean_absolute_error(y_test, y_predict)
+mse = metrics.mean_squared_error(y_test, y_predict)
+rms = sqrt(metrics.mean_squared_error(y_test, y_predict))
+print(mae)
+print(mse)
+print(rms)
+-------------------------------
+
+K NEAREST NEIGHBOURS
+-------------------------
+from sklearn.neighbors import KNeighborsClassifier
+knn = KNeighborsClassifier (n_neighbors=1)
+
+X_tr, X_te, y_tr, y_te = train_test_split(iris.data, iris.target, test_size=0.4) 
+
+knn.fit(X_tr,y_tr)
+
+predict_y = knn.predict(X_te)
+
+from sklearn.metrics import accuracy_score
+accuracy_score(y_te,predict_y)
+--------------------------
