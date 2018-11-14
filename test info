@@ -1,0 +1,123 @@
+import matplotlib.pyplot as plt
+%matplotlib inline
+import pandas as pd
+import numpy as np
+import sklearn as skl
+df = pd.read_csv("CSVNAME.csv")
+
+if its a tsv do either:
+df = pd.read_table("TSVNAME.tsv")
+pd.read_csv('TSVNAME.tsv', sep='\t')
+
+MATPLOTLIB EXAMPLE (MULTIPLE SCATTER WITH LEGEND)
+-------------------
+plt.scatter(df["COL_NAME_X1"],df["COL_NAME_Y"], label = "LABEL NAME(X1)", color="red")
+plt.scatter(df["COL_NAME_X2"],df["COL_NAME_Y"], label = "LABEL NAME(X2)", color="green")
+plt.scatter(df["COL_NAME_X3"],df["COL_NAME_Y"], label = "LABEL NAME(X3)", color="blue")
+plt.legend()
+-------------------
+
+MATPLOTLIB EXAMPLE (PIE)
+-------------------
+ax1 = plt.subplot(121, aspect='equal')
+South_America.plot(kind='pie', y = 'total_litres_of_pure_alcohol', ax=ax1, autopct='%1.f%%', 
+ startangle=90, shadow=False, labels=South_America['country'], legend = False, fontsize=5)
+-------------------
+
+MATPLOTLIB EXAMPLE (LINE PLOT)
+-------------------
+temperature = np.loadtxt("temperature.txt")
+plt.plot(temperature)
+plt.xlabel('Months')
+plt.title('Plot 1')
+plt.ylabel('Temperature(C)')
+plt.suptitle('Temperature from 1980 to 2000', fontsize=16)
+-------------------
+
+MATPLOTLIB EXAMPLE (SUBPLOTTING(3))
+-------------------
+plt.plot(temperature)
+plt.xlabel('Days')
+plt.title('Plot 1')
+plt.ylabel('Temperature(C)')
+plt.suptitle('Temperature from 1980 to 2000', fontsize=16)
+
+plt.suptitle('Temperature from 1980 to 2018', fontsize=16)
+plt.subplot(211)
+plt.plot(temperature, color="blue", linestyle="dotted")
+plt.ylabel('1980 - 2000')
+
+plt.subplot(212)
+plt.xlabel('Months')
+plt.plot(temperature2, color="green", linestyle="dashed")
+plt.ylabel('2000 - 2018')
+-------------------
+
+DEFINING FUNCTIONS
+-------------------
+temperature = np.loadtxt("temperature.txt")
+year = int(input("Enter year: "))
+month = int(input("Enter month: "))
+def get_index(year,month):
+    print(temperature[(year-1980) * 12 + month - 1])
+get_index(year,month)
+-------------------
+
+PANDAS INDEXING
+--------------------
+temperature = np.loadtxt("temperature.txt")
+print(temperature[1])
+print(temperature[26])
+print(temperature[155])
+-------------------
+
+NUMPY USEFUL FUNCTIONS
+-------------------------
+np.average()
+np.max()
+np.amin()
+np.average()
+np.sum()
+np.argwhere()     --finds index given a condition
+np.arange()       --creates a range from start value to stop value, can have third value to determine increment amount
+---------------------------
+
+NUMPY SLICES
+-------------------------
+temperature = np.loadtxt("temperature.txt")
+slices = (np.amin(temperature[0:20]),np.amin(temperature[99:140]),np.amin(temperature[215:250]))
+print (np.amin(slices))
+--------------------------
+
+DICTIONARYS TO DATAFRAMES
+--------------------------
+data2 = {'Name' : ['Jane','Jan','John','Jabin','Jace'],
+        'ID' : [100,102,104,106,108],
+        'Mark' : [74,92,58,81,66]}
+pd.DataFrame.from_dict(data2)
+---------------------------
+
+ARRAYS TO DATAFRAMES
+---------------------------
+data2 = [['Jane','100','74'],['Jan','102','92'],['John','104','58'],['Jabin','106','81'],['Jace','108','66']]
+pd.DataFrame.from_records(data2, index = ['a','b','c','d','e'], columns = ['Name','ID','Mark'])
+---------------------------
+
+STACKING 1D ARRAYS INTO 2d ARRAYS
+---------------------------
+id1 = np.array(np.arange(1000,1050))
+mark = np.array(())
+for i in range(50):
+    mark = np.append(mark,np.random.randint(60,100))
+both = np.column_stack((id1,mark))
+pd.DataFrame.from_records(both,columns = ['ID','Mark'])
+----------------------------
+
+USEFUL DATAFRAME FUNCTIONS
+----------------------------
+df.head()
+df.size
+df.info
+df.dtypes
+df.loc()
+
