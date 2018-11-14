@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import sklearn as skl
 df = pd.read_csv("CSVNAME.csv")
+df = np.loadtxt("TEXTNAME.txt")
 
 if its a tsv do either:
 df = pd.read_table("TSVNAME.tsv")
@@ -112,6 +113,9 @@ np.sum()
 np.argwhere()     (finds index given a condition)
 np.arange()       (creates a range from start value to stop value, can have third value to determine increment amount)
 np.std   (standard deviation)
+np.array()   e.g       new_array = np.array(temperature[4:15])
+np.delete()
+np.insert()
 ---------------------------
 
 NUMPY SLICES
